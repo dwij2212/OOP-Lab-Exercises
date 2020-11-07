@@ -4,7 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class Monitor extends Thread {
+public class Monitor implements Runnable {
 	private Data d; // shared object
 	private int tails = 0; // count number of tails
 	private int heads = 0; // count number of heads public
@@ -17,12 +17,12 @@ public class Monitor extends Thread {
 
 		for (int i = 0; i < d.getNop(); i++) {
 
-			synchronized (d) {
+			synchronized (d.getLock()) {
 
 				while (d.ispChance()) {
 					System.out.println("Monitor waiting");
 					try {
-						d.wait();
+						d.getLock().wait();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -37,7 +37,8 @@ public class Monitor extends Thread {
 
 				d.setmChance(false);
 				d.setpChance(true);
-				d.notifyAll();
+				d.getLock().notifyAll();
+				;
 			}
 		}
 
@@ -53,6 +54,8 @@ public class Monitor extends Thread {
 			System.out.println(e.getMessage());
 		}
 
+		System.out.println("Heads: " + this.getHeads());
+		System.out.println("Tails: " + this.getTails());
 	}
 
 	public int getTails() {

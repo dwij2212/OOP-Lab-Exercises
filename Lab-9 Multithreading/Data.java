@@ -14,7 +14,7 @@ public class Data {
 	// number of players
 	private int nop;
 	// to implement locking mechanism
-	private Object lock = 1;
+	private Object lock = new Object();
 
 	public Data() {
 		// Q1.

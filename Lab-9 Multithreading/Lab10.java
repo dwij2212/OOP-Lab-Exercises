@@ -6,15 +6,14 @@ public class Lab10 {
 		Thread[] players = new Thread[d.getNop()];
 		Thread monitor;
 
-		monitor = new Monitor(d);
+		monitor = new Thread(new Monitor(d));
 
 		for (int i = 0; i < d.getNop(); i++) {
-			players[i] = new Player(d);
+			players[i] = new Thread(new Player(d));
 		}
 
 		for (int i = 0; i < players.length; i++) {
 			players[i].start();
-
 		}
 
 		monitor.start();
@@ -26,7 +25,5 @@ public class Lab10 {
 			e.printStackTrace();
 		}
 
-		System.out.println(((Monitor) monitor).getHeads());
-		System.out.println(((Monitor) monitor).getTails());
 	}
 }
